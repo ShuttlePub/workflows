@@ -21,7 +21,7 @@ jobs:
       - run: |
           # outputs like [kernel,driver]
           WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/]\n/')
-          echo "::set-output name=matrix::$WORKSPACES"
+          echo "matrix=$WORKSPACES >> $GITHUB_OUTPUT"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     
