@@ -7,13 +7,6 @@ on:
         type: string
         required: false
         default: stable
-      gen_coverage:
-        type: boolean
-        required: false
-        default: false
-    secrets:
-      CODECOV_TOKEN:
-        required: false
 
 jobs:
   detect-workspaces:
@@ -47,8 +40,6 @@ jobs:
         with:
           toolchain: ${{ inputs.channel }}
           components: clippy
-      - if: ${{ inputs.gen_coverage }}
-        uses: taiki-e/install-action@cargo-llvm-cov
       - uses: giraffate/clippy-action@v1
         with:
           reporter: 'github-pr-review'
@@ -57,29 +48,4 @@ jobs:
       - name: Build
         run: cargo build --verbose -p ${{ matrix.workspace }}
       - name: Test
-        run: |
-          if [ ${{ inputs.gen_coverage }} = true ]; then
-            cargo llvm-cov --all-features --lcov --verbose -p ${{ matrix.workspace }} --output-path coverage-${{ matrix.workspace }}.lcov
-          else
-            cargo test --verbose -p ${{ matrix.workspace }}
-          fi
-      - name: Upload coverage file
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-artifact
-          path: coverage-${{ matrix.workspace }}.lcov
-  upload-coverage:
-    runs-on: ubuntu-latest
-    needs: check
-    if: ${{ inputs.gen_coverage }}
-    steps:
-      - name: Download coverage files
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage-artifact
-      - name:  Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
-          verbose: true
+        run: cargo test --verbose -p ${{ matrix.workspace }}

@@ -14,6 +14,16 @@ Inputs
 | ------- | ------- |
 | channel | stable  |
 
+### [coverage.yml](.github/workflows/coverage.yml)
+
+Generage coverage and upload to covecov
+
+`ShuttlePub/workflows/.github/workflows/coverage.yml@main`
+
+Secrets
+
+- CODECOV_TOKEN
+
 # Example
 
 ```yaml
