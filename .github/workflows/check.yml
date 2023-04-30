@@ -25,7 +25,7 @@ jobs:
           echo "result: $WORKSPACES"
           echo "matrix=$WORKSPACES" >> $GITHUB_OUTPUT
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ fromJson(steps.set-matrix.outputs.matrix) }}
     
   check:
     needs: detect-workspaces
