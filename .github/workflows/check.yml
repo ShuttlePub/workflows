@@ -20,8 +20,8 @@ jobs:
       - run: cargo install cargo-workspaces
       - id: set-matrix
         run: |
-          # outputs like [kernel,driver]
-          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/]\n/')
+          # outputs like ["kernel","driver"]
+          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/\"]\n/' | sed -e 's/\[/\[\"/' | sed -e 's/,/\",\"/g')
           echo "matrix=$WORKSPACES >> $GITHUB_OUTPUT"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
