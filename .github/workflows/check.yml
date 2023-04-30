@@ -7,6 +7,10 @@ on:
         type: string
         required: false
         default: stable
+      gen_coverage:
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   detect-workspaces:
@@ -40,8 +44,9 @@ jobs:
         with:
           toolchain: ${{ inputs.channel }}
           components: clippy
+      - if: ${{ inputs.gen_coverage }}
+        uses: taiki-e/install-action@cargo-llvm-cov
       - uses: giraffate/clippy-action@v1
-
         with:
           reporter: 'github-pr-review'
           clippy_flags: '-p ${{ matrix.workspace }} -- -Dwarnings'
@@ -49,4 +54,9 @@ jobs:
       - name: Build
         run: cargo build --verbose -p ${{ matrix.workspace }}
       - name: Test
-        run: cargo test --verbose -p ${{ matrix.workspace }}
+        run: |
+          if [ ${{ inputs.gen_coverage }} = true ]; then
+            cargo llvm-cov --codecov --verbose -p ${{ matrix.workspace }} --output-path coverage-${{ matrix.workspace }}.json
+          else
+            cargo test --verbose -p ${{ matrix.workspace }}
+          fi
