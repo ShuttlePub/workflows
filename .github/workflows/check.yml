@@ -11,6 +11,9 @@ on:
         type: boolean
         required: false
         default: false
+    secrets:
+      CODECOV_TOKEN:
+        required: false
 
 jobs:
   detect-workspaces:
@@ -60,3 +63,10 @@ jobs:
           else
             cargo test --verbose -p ${{ matrix.workspace }}
           fi
+      - name:  Upload coverage
+        if: ${{ inputs.gen_coverage }}
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
