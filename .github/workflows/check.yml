@@ -21,7 +21,7 @@ jobs:
       - id: set-matrix
         run: |
           # outputs like ["kernel","driver"]
-          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/\"]\n/' | sed -e 's/\[/\[\"/' | sed -e 's/,/\",\"/g')
+          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',' | sed -e 's/],/]\n/' | sed -e 's/,/, /g')
           echo "result: $WORKSPACES"
           echo "matrix=$WORKSPACES" >> $GITHUB_OUTPUT
     outputs:
@@ -33,7 +33,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          workspace: ${{ fromJson(needs.detect-workspaces.outputs.matrix) }}
+          workspace: ${{ needs.detect-workspaces.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
