@@ -9,20 +9,39 @@ on:
         default: stable
 
 jobs:
-  check:
+  detect-workspaces:
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
+      - run: cargo install cargo-workspaces
+      - run: |
+          # outputs like [kernel,driver]
+          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/]\n/')
+          echo "::set-output name=matrix::$WORKSPACES"
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    
+  check:
+    needs: detect-workspaces
+    runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        matrix:
+          workspace: ${{ needs.detect-workspaces.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@${{ inputs.channel }}
         with:
           components: clippy
       - uses: giraffate/clippy-action@v1
+
         with:
           reporter: 'github-pr-review'
-          clippy_flags: '-- -Dwarnings'
+          clippy_flags: '-p ${{ matrix.workspace }} -- -Dwarnings'
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
-        run: cargo build --verbose
+        run: cargo build --verbose -p ${{ matrix.workspace }}
       - name: Test
-        run: cargo test --verbose
+        run: cargo test --verbose -p ${{ matrix.workspace }}
