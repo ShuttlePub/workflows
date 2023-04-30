@@ -25,7 +25,7 @@ jobs:
           echo "result: $WORKSPACES"
           echo "matrix=$WORKSPACES" >> $GITHUB_OUTPUT
     outputs:
-      matrix: ${{ fromJson(steps.set-matrix.outputs.matrix) }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     
   check:
     needs: detect-workspaces
@@ -33,7 +33,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          workspace: ${{ needs.detect-workspaces.outputs.matrix }}
+          workspace: ${{ fromJson(needs.detect-workspaces.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
