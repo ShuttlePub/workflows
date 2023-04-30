@@ -63,8 +63,21 @@ jobs:
           else
             cargo test --verbose -p ${{ matrix.workspace }}
           fi
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-artifact
+          path: coverage-${{ matrix.workspace }}.json
+  upload-coverage:
+    runs-on: ubuntu-latest
+    needs: check
+    if: ${{ inputs.gen_coverage }}
+    steps:
+      - name: Download coverage files
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-artifact
       - name:  Upload coverage
-        if: ${{ inputs.gen_coverage }}
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
