@@ -32,8 +32,9 @@ jobs:
           workspace: ${{ needs.detect-workspaces.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@${{ inputs.channel }}
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: ${{ inputs.channel }}
           components: clippy
       - uses: giraffate/clippy-action@v1
 
