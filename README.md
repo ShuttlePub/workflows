@@ -40,3 +40,15 @@ jobs:
       chennel: unstable
 ```
 
+### [bench.yml](.github/workflows/bench.yml)
+
+Benchmark each workspaces
+
+`ShuttlePub/workflows/.github/workflows/bench.yml@main`
+
+Inputs
+| name           | default             |
+| -------------- | ------------------- |
+| channel        | stable              |
+| features       | async,tokio-support |
+| compare-branch | main                |

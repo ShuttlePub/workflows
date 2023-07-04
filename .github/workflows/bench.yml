@@ -1,0 +1,55 @@
+name: Check
+
+on:
+  workflow_call:
+    inputs:
+      channel:
+        type: string
+        required: false
+        default: stable
+      features:
+        type: string
+        required: false
+        default: "async,tokio-support"
+      compare-branch:
+        type: string
+        required: false
+        default: main
+
+jobs:
+  detect-workspaces:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: baptiste0928/cargo-install@v2
+        with:
+          crate: cargo-workspaces
+      - run: cargo install cargo-workspaces
+      - id: set-matrix
+        run: |
+          # outputs like ["kernel","driver"]
+          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/\"]\n/' | sed -e 's/\[/\[\"/' | sed -e 's/,/\",\"/g')
+          echo "result: $WORKSPACES"
+          echo "matrix=$WORKSPACES" >> $GITHUB_OUTPUT
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    
+  check:
+    needs: detect-workspaces
+    runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        matrix:
+          workspace: ${{ fromJson(needs.detect-workspaces.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ inputs.channel }}
+      - name: Bench
+        uses: boa-dev/criterion-compare-action@v3
+        with:
+          branchName: ${{ inputs.compare-branch }}
+          package: ${{ matrix.workspace }}
+          features: ${{ inputs.features }}
