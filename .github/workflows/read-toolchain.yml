@@ -9,7 +9,7 @@ jobs:
     if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
     steps:
       - uses: actions/checkout@v3
-      - uses: SebRollen/toml-action@v1
+      - uses: SebRollen/toml-action@v1.0.2
         id: toolchain
         with:
           file: "rust-toolchain.toml"
