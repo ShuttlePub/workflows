@@ -46,3 +46,31 @@ jobs:
       compare-branch: dev 
 ```
 
+## Sub workflows
+
+### [detect-workspaces.yml](.github/workflows/detect-workspaces.yml)
+
+Detect workspaces and outputs with matrix compatible format
+
+`ShuttlePub/workflows/.github/workflows/detect-workspaces.yml@main`
+
+outputs
+
+| name   | example              |
+| ------ | -------------------- |
+| matrix | ["kernel", "driver"] |
+
+
+
+### [read-toolchain.yml](.github/workflows/read-toolchain.yml)
+
+Read toolchain channel from rust-toolchain.toml
+
+`ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main`
+
+outputs
+
+| name    | example |
+| ------- | ------- |
+| channel | stable  |
+
