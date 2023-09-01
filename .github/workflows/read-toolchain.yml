@@ -2,6 +2,10 @@ name: Read rust-toolchain.toml
 
 on:
   workflow_call:
+    outputs:
+      channel:
+        description: "Detected toolchain channel"
+        value: ${{ jobs.read-toolchain.outputs.channel }}
     
 jobs:
   read-toolchain:

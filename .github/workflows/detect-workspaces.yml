@@ -2,6 +2,10 @@ name: DetectWorkspaces
 
 on:
   workflow_call:
+    outputs:
+      matrix:
+        description: "Detected workspaces for using matrix"
+        value: ${{ jobs.detect-workspaces.outputs.matrix }}
    
 jobs:
   detect-workspaces:
