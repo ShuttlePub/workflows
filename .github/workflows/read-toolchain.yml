@@ -21,4 +21,4 @@ jobs:
       - run: |
           echo "detected: ${{ steps.toolchain.outputs.value }}"
     outputs:
-      chennel: ${{ steps.toolchain.outputs.value }}
+      channel: ${{ steps.toolchain.outputs.value }}
