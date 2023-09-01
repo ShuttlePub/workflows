@@ -1,0 +1,24 @@
+name: DetectWorkspaces
+
+on:
+  workflow_call:
+   
+jobs:
+  detect-workspaces:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: baptiste0928/cargo-install@v2
+        with:
+          crate: cargo-workspaces
+      - run: cargo install cargo-workspaces
+      - id: set-matrix
+        run: |
+          # outputs like ["kernel","driver"]
+          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/\"]\n/' | sed -e 's/\[/\[\"/' | sed -e 's/,/\",\"/g')
+          echo "result: $WORKSPACES"
+          echo "matrix=$WORKSPACES" >> $GITHUB_OUTPUT
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    

@@ -8,12 +8,6 @@ Runs lint and test
 
 `ShuttlePub/workflows/.github/workflows/check.yml@main`
 
-Inputs
-
-| name    | default |
-| ------- | ------- |
-| channel | stable  |
-
 ### [coverage.yml](.github/workflows/coverage.yml)
 
 Generage coverage and upload to covecov
@@ -23,6 +17,18 @@ Generage coverage and upload to covecov
 Secrets
 
 - CODECOV_TOKEN
+
+### [bench.yml](.github/workflows/bench.yml)
+
+Benchmark each workspaces
+
+`ShuttlePub/workflows/.github/workflows/bench.yml@main`
+
+Inputs
+| name           | default             |
+| -------------- | ------------------- |
+| features       | async,tokio-support |
+| compare-branch | main                |
 
 # Example
 
@@ -35,20 +41,8 @@ on:
 
 jobs:
   build:
-    uses: ShuttlePub/workflows/.github/workflows/check.yml@main
+    uses: ShuttlePub/workflows/.github/workflows/bench.yml@main
     with:
-      chennel: unstable
+      compare-branch: dev 
 ```
 
-### [bench.yml](.github/workflows/bench.yml)
-
-Benchmark each workspaces
-
-`ShuttlePub/workflows/.github/workflows/bench.yml@main`
-
-Inputs
-| name           | default             |
-| -------------- | ------------------- |
-| channel        | stable              |
-| features       | async,tokio-support |
-| compare-branch | main                |

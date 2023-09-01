@@ -7,12 +7,18 @@ on:
         required: true
 
 jobs:
+  read-toolchain:
+    uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
+
   coverage:
+    needs: read-toolchain
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.read-toolchain.outputs.channel }}
       - uses: taiki-e/install-action@cargo-llvm-cov
       - name: Generate coverage
         run: cargo llvm-cov --all-features --lcov --verbose --workspace --output-path coverage.lcov

@@ -2,33 +2,15 @@ name: Check
 
 on:
   workflow_call:
-    inputs:
-      channel:
-        type: string
-        required: false
-        default: stable
 
 jobs:
+  read-toolchain:
+    uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
   detect-workspaces:
-    runs-on: ubuntu-latest
-    if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: baptiste0928/cargo-install@v2
-        with:
-          crate: cargo-workspaces
-      - run: cargo install cargo-workspaces
-      - id: set-matrix
-        run: |
-          # outputs like ["kernel","driver"]
-          WORKSPACES=$(echo "[$(cargo ws ls)]" | tr '\n' ',\t' | sed -e 's/],/\"]\n/' | sed -e 's/\[/\[\"/' | sed -e 's/,/\",\"/g')
-          echo "result: $WORKSPACES"
-          echo "matrix=$WORKSPACES" >> $GITHUB_OUTPUT
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    
+    uses: ShuttlePub/workflows/.github/workflows/detect-workspaces.yml@main
+
   check:
-    needs: detect-workspaces
+    needs: [read-toolchain, detect-workspaces]
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
@@ -38,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: ${{ inputs.channel }}
+          toolchain: ${{ needs.read-toolchain.outputs.channel }}
           components: clippy, rustfmt
       - name: Format check
         run: cargo fmt --verbose -p ${{ matrix.workspace }} -- --check

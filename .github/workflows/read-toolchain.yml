@@ -1,0 +1,18 @@
+name: Read rust-toolchain.toml
+
+on:
+  workflow_call:
+    
+jobs:
+  read-toolchain:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: SebRollen/toml-action@v1
+        id: toolchain
+        with:
+          file: "rust-toolchain.toml"
+          field: "toolchain.channel"
+    outputs:
+      chennel: ${{ steps.toolchain.outputs.value }}
