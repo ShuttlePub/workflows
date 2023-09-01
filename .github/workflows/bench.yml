@@ -30,6 +30,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ needs.read-toolchain.outputs.channel }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ matrix.workspace }}
       - name: Bench
         uses: boa-dev/criterion-compare-action@v3
         with:

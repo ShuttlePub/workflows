@@ -22,6 +22,9 @@ jobs:
         with:
           toolchain: ${{ needs.read-toolchain.outputs.channel }}
           components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ matrix.workspace }}
       - name: Format check
         run: cargo fmt --verbose -p ${{ matrix.workspace }} -- --check
       - uses: giraffate/clippy-action@v1

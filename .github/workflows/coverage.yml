@@ -19,6 +19,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ needs.read-toolchain.outputs.channel }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ matrix.workspace }}
       - uses: taiki-e/install-action@cargo-llvm-cov
       - name: Generate coverage
         run: cargo llvm-cov --all-features --lcov --verbose --workspace --output-path coverage.lcov
