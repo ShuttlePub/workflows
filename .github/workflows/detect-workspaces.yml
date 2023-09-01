@@ -16,7 +16,6 @@ jobs:
       - uses: baptiste0928/cargo-install@v2
         with:
           crate: cargo-workspaces
-      - run: cargo install cargo-workspaces
       - id: set-matrix
         run: |
           # outputs like ["kernel","driver"]
