@@ -18,5 +18,7 @@ jobs:
         with:
           file: "rust-toolchain.toml"
           field: "toolchain.channel"
+      - run: |
+          echo "detected: ${{ steps.toolchain.outputs.value }}"
     outputs:
       chennel: ${{ steps.toolchain.outputs.value }}
