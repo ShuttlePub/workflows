@@ -17,7 +17,7 @@ jobs:
         matrix:
           workspace: ${{ fromJson(needs.detect-workspaces.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ needs.read-toolchain.outputs.channel }}
