@@ -1,0 +1,21 @@
+name: Validate pull request title
+
+on:
+  workflow_call:
+
+jobs:
+  validate-title:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'ShuttlePub' }}
+    steps:
+      - name: Check PR title
+        run: |
+          title=${{ github.event.pull_request.title }}
+          #Based on https://github.com/arvinxx/gitmoji-commit-workflow/tree/master/packages/gitmoji-regex
+          #https://regex101.com/r/RZNpqd/1
+          regex='^(?::\w*:|(?:\ud83c[\udf00-\udfff])|(?:\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55])\s(?:(?!#).)*(?:(?!\s).)(?:\s\(?(#\d*)\)?)?$'
+          if [[ ":hammer: test" =~ $regex ]]; then
+            exit 0
+          else
+            echo "Failed to validate title $title"
+            exit 1
