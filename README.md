@@ -30,6 +30,12 @@ Inputs
 | features       | async,tokio-support |
 | compare-branch | main                |
 
+### [validate-pr.yml](.github/workflows/validate-pr.yml)
+
+Validates pull request title
+
+`ShuttlePub/workflows/.github/workflows/validate-pr.yml@main`
+
 # Example
 
 ```yaml
