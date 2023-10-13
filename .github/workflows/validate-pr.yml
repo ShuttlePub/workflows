@@ -23,9 +23,9 @@ jobs:
             const title = pullRequest.title;
             core.info(`PR title: ${title}`);
 
-            //Based on https://github.com/arvinxx/gitmoji-commit-workflow/tree/master/packages/gitmoji-regex
+            // Based on https://github.com/arvinxx/gitmoji-commit-workflow/tree/master/packages/gitmoji-regex
             // https://regex101.com/r/RZNpqd/4
             const regex = /^(?::\w*:|(?:\ud83c[\udf00-\udfff])|(?:\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55])\s-\s(?:(?!#).)*(?:(?!\s).)(?:\s\(?(#\d*)\)?)?$/mg;
             if (regex.exec(title) === null) {
-              core.setFailed(`Failed to validate title $title}`)
+              core.setFailed(`Failed to validate title ${title}`)
             }
