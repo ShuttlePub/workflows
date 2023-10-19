@@ -36,14 +36,31 @@ Validates pull request title
 
 `ShuttlePub/workflows/.github/workflows/validate-pr.yml@main`
 
+```yaml
+name: Validate PR title
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+    
+jobs:
+  validate:
+    uses: ShuttlePub/workflows/.github/workflows/validate-pr.yml@main
+```
+
+
+
 # Example
 
 ```yaml
 name: check
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - dev
 
 jobs:
   build:
