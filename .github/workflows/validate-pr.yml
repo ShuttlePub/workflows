@@ -9,7 +9,7 @@ jobs:
     if: ${{ github.repository_owner == 'ShuttlePub' }}
     steps:
       - name: Check PR title
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const owner = context.payload.pull_request.base.user.login;
