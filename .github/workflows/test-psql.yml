@@ -1,0 +1,53 @@
+name: Check
+
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        type: string
+        required: true
+
+jobs:
+  read-toolchain:
+    uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
+
+  check-psql:
+    needs: [detect-workspaces]
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: postgres_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - "5432:5432"
+        # Set health checks to wait until postgres has started
+        options: --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.read-toolchain.outputs.channel }}
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ inputs.workspace }}
+      - name: Format check
+        run: cargo fmt --verbose -p ${{ inputs.workspace }} -- --check
+      - uses: giraffate/clippy-action@v1
+        with:
+          reporter: 'github-pr-review'
+          clippy_flags: '-p ${{ inputs.workspace }} -- -Dwarnings'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: cargo build --verbose -p ${{ inputs.workspace }}
+      - name: Test
+        run: cargo test --verbose -p ${{ inputs.workspace }}
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres_test
