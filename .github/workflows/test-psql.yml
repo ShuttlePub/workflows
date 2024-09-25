@@ -12,7 +12,7 @@ jobs:
     uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
 
   check-psql:
-    needs: [detect-workspaces]
+    needs: [read-toolchain]
     services:
       postgres:
         image: postgres
