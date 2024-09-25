@@ -8,6 +8,22 @@ Runs lint and test
 
 `ShuttlePub/workflows/.github/workflows/check.yml@main`
 
+Inputs
+| name      | example                  |
+| --------  | ------------------------ |
+| workspace | '[ "kernel", "driver" ]' |
+
+### [test-psql.yml](.github/workflows/test-psql.yml)
+
+Runs lint and test with PostgreSQL
+
+`ShuttlePub/workflows/.github/workflows/test-psql.yml@main`
+
+Inputs
+| name      | example                  |
+| --------  | ------------------------ |
+| workspace | '[ "kernel", "driver" ]' |
+
 ### [coverage.yml](.github/workflows/coverage.yml)
 
 Generage coverage and upload to covecov
