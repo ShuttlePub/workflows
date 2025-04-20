@@ -1,0 +1,7 @@
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        "ShuttlePub/workflows/*": ref-pin
+        "taiki-e/install-action": ref-pin
+    ignore:
