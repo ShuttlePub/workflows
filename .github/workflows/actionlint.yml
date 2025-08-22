@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
-      - uses: reviewdog/action-actionlint@50b75b9513baa71e6a1899a1ebaa9ac9851cf16c # v1.66.0
+      - uses: reviewdog/action-actionlint@e37e2ca68a70112d21e135229272da28ce2d0d5a # v1.66.1
       - uses: taiki-e/cache-cargo-install-action@b33c63d3b3c85540f4eba8a4f71a5cc0ce030855 # v2.3.0
         with:
           tool: zizmor@1.6.0
