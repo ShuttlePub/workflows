@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
-      - uses: baptiste0928/cargo-install@e38323ef017552d7f7af73a3f4db467f278310ed # v3.3.1
+      - uses: baptiste0928/cargo-install@b687c656bda5733207e629b50a22bf68974a0305 # v3.3.2
         with:
           crate: cargo-workspaces
       - id: set-matrix
