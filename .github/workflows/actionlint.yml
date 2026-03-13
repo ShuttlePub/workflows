@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: reviewdog/action-actionlint@0d952c597ef8459f634d7145b0b044a9699e5e43 # v1.71.0
-      - uses: taiki-e/cache-cargo-install-action@2bfc3cedaf2ee5e7fa5d0ae034ccd5fb50cf8e1f # v3.0.2
+      - uses: taiki-e/cache-cargo-install-action@59027ebf20a9617c4e819eb53ccd2673cb162b89 # v3.0.3
         with:
           tool: zizmor@1.6.0
       - run: zizmor --persona=auditor .
