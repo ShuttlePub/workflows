@@ -20,6 +20,7 @@ permissions:
   contents: read
 jobs:
   detect-workspaces:
+    name: Detect workspaces
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
     steps:

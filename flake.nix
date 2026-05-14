@@ -31,7 +31,13 @@
             yamlfmt.enable = true;
           };
         };
-        devShells.default = pkgs.mkShell { packages = [ pkgs.bashInteractive ]; };
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            bashInteractive
+            zizmor
+            pinact
+          ];
+        };
       }
     );
 }

@@ -5,6 +5,7 @@ permissions:
   pull-requests: read
 jobs:
   validate-title:
+    name: Validate PR title
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'ShuttlePub' }}
     steps:

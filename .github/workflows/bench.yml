@@ -18,6 +18,7 @@ jobs:
   detect-workspaces:
     uses: ShuttlePub/workflows/.github/workflows/detect-workspaces.yml@main
   check:
+    name: Bench ${{ matrix.workspace }}
     needs: [read-toolchain, detect-workspaces]
     runs-on: ubuntu-latest
     strategy:

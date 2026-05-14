@@ -10,12 +10,13 @@ jobs:
   read-toolchain:
     uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
   coverage:
+    name: Calculate coverage
     needs: read-toolchain
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
     services:
       postgres:
-        image: postgres
+        image: postgres:16@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59
         env:
           POSTGRES_DB: postgres_test
           POSTGRES_USER: postgres

@@ -24,6 +24,7 @@ jobs:
       target-repository: ${{ inputs.target-repository }}
       target-ref: ${{ inputs.target-ref }}
   check:
+    name: Check ${{ matrix.workspace }}
     needs: [read-toolchain]
     runs-on: ubuntu-latest
     strategy:
