@@ -24,10 +24,11 @@ jobs:
       target-repository: ${{ inputs.target-repository }}
       target-ref: ${{ inputs.target-ref }}
   check-psql:
+    name: Check ${{ inputs.workspace }} with PostgreSQL
     needs: [read-toolchain]
     services:
       postgres:
-        image: postgres
+        image: postgres:16@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59
         env:
           POSTGRES_DB: postgres_test
           POSTGRES_USER: postgres
