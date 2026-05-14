@@ -17,9 +17,6 @@ on:
         default: ""
 permissions:
   contents: read
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 jobs:
   read-toolchain:
     uses: ./.github/workflows/read-toolchain.yml
