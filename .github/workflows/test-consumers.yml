@@ -1,0 +1,33 @@
+name: Test consumers
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+jobs:
+  emumet-check:
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/check.yml
+    with:
+      workspace: '[ "kernel", "adapter", "application", "server" ]'
+      target-repository: ShuttlePub/Emumet
+      target-ref: main
+
+  emumet-test-psql:
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/test-psql.yml
+    with:
+      workspace: driver
+      target-repository: ShuttlePub/Emumet
+      target-ref: main

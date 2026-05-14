@@ -2,6 +2,17 @@ name: Read rust-toolchain.toml
 
 on:
   workflow_call:
+    inputs:
+      target-repository:
+        description: "Repository to checkout for reading toolchain (default: caller repository)"
+        type: string
+        required: false
+        default: ""
+      target-ref:
+        description: "Ref of target-repository to checkout (default: caller ref)"
+        type: string
+        required: false
+        default: ""
     outputs:
       channel:
         description: "Detected toolchain channel"
@@ -17,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: ${{ inputs.target-repository }}
+          ref: ${{ inputs.target-ref }}
           persist-credentials: false
       - uses: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876 # v1.2.0
         id: toolchain

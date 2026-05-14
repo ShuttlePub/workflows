@@ -6,13 +6,26 @@ on:
       workspace:
         type: string
         required: true
+      target-repository:
+        description: "Repository to checkout for running checks (default: caller repository)"
+        type: string
+        required: false
+        default: ""
+      target-ref:
+        description: "Ref of target-repository to checkout (default: caller ref)"
+        type: string
+        required: false
+        default: ""
 
 permissions:
   contents: read
 
 jobs:
   read-toolchain:
-    uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
+    uses: ./.github/workflows/read-toolchain.yml
+    with:
+      target-repository: ${{ inputs.target-repository }}
+      target-ref: ${{ inputs.target-ref }}
 
   check-psql:
     needs: [read-toolchain]
@@ -25,7 +38,6 @@ jobs:
           POSTGRES_PASSWORD: postgres
         ports:
           - "5432:5432"
-        # Set health checks to wait until postgres has started
         options: --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -37,6 +49,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: ${{ inputs.target-repository }}
+          ref: ${{ inputs.target-ref }}
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9
         with:
@@ -47,11 +61,8 @@ jobs:
           shared-key: ${{ inputs.workspace }}
       - name: Format check
         run: cargo fmt --verbose -p $WORKSPACE -- --check
-      - uses: giraffate/clippy-action@13b9d32482f25d29ead141b79e7e04e7900281e0 # v1.0.1
-        with:
-          reporter: 'github-pr-review'
-          clippy_flags: '-p ${{ inputs.workspace }} -- -Dwarnings'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Clippy
+        run: cargo clippy --verbose -p "$WORKSPACE" --all-targets -- -D warnings
       - name: Build
         run: cargo build --verbose -p $WORKSPACE
       - name: Test
