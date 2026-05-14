@@ -1,5 +1,4 @@
 name: DetectWorkspaces
-
 on:
   workflow_call:
     inputs:
@@ -17,10 +16,8 @@ on:
       matrix:
         description: "Detected workspaces for using matrix"
         value: ${{ jobs.detect-workspaces.outputs.matrix }}
-
 permissions:
   contents: read
-
 jobs:
   detect-workspaces:
     runs-on: ubuntu-latest

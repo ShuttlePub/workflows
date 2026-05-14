@@ -1,5 +1,4 @@
 name: Read rust-toolchain.toml
-
 on:
   workflow_call:
     inputs:
@@ -17,10 +16,8 @@ on:
       channel:
         description: "Detected toolchain channel"
         value: ${{ jobs.read-toolchain.outputs.channel }}
-
 permissions:
   contents: read
-
 jobs:
   read-toolchain:
     runs-on: ubuntu-latest

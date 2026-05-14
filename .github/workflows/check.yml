@@ -1,5 +1,4 @@
 name: Check
-
 on:
   workflow_call:
     inputs:
@@ -16,24 +15,21 @@ on:
         type: string
         required: false
         default: ""
-
 permissions:
   contents: read
-
 jobs:
   read-toolchain:
     uses: ./.github/workflows/read-toolchain.yml
     with:
       target-repository: ${{ inputs.target-repository }}
       target-ref: ${{ inputs.target-ref }}
-
   check:
     needs: [read-toolchain]
     runs-on: ubuntu-latest
     strategy:
-        fail-fast: false
-        matrix:
-          workspace: ${{ fromJson(inputs.workspace) }}
+      fail-fast: false
+      matrix:
+        workspace: ${{ fromJson(inputs.workspace) }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:

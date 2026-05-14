@@ -1,5 +1,4 @@
 name: Check
-
 on:
   workflow_call:
     inputs:
@@ -11,23 +10,20 @@ on:
         type: string
         required: false
         default: main
-
 permissions:
   contents: read
-
 jobs:
   read-toolchain:
     uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
   detect-workspaces:
     uses: ShuttlePub/workflows/.github/workflows/detect-workspaces.yml@main
-    
   check:
     needs: [read-toolchain, detect-workspaces]
     runs-on: ubuntu-latest
     strategy:
-        fail-fast: false
-        matrix:
-          workspace: ${{ fromJson(needs.detect-workspaces.outputs.matrix) }}
+      fail-fast: false
+      matrix:
+        workspace: ${{ fromJson(needs.detect-workspaces.outputs.matrix) }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:

@@ -1,11 +1,8 @@
 name: Validate pull request title
-
 on:
   workflow_call:
-
 permissions:
   pull-requests: read
-
 jobs:
   validate-title:
     runs-on: ubuntu-latest

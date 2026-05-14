@@ -1,5 +1,4 @@
 name: Check
-
 on:
   workflow_call:
     inputs:
@@ -16,17 +15,17 @@ on:
         type: string
         required: false
         default: ""
-
 permissions:
   contents: read
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   read-toolchain:
     uses: ./.github/workflows/read-toolchain.yml
     with:
       target-repository: ${{ inputs.target-repository }}
       target-ref: ${{ inputs.target-ref }}
-
   check-psql:
     needs: [read-toolchain]
     services:
@@ -38,11 +37,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
         ports:
           - "5432:5432"
-        options: --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     runs-on: ubuntu-latest
     env:
       WORKSPACE: ${{ inputs.workspace }}

@@ -1,18 +1,14 @@
 name: Calculate Coverage
-
 on:
   workflow_call:
     secrets:
       CODECOV_TOKEN:
         required: true
-
 permissions:
   contents: read
-
 jobs:
   read-toolchain:
     uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
-
   coverage:
     needs: read-toolchain
     runs-on: ubuntu-latest
@@ -27,11 +23,7 @@ jobs:
         ports:
           - "5432:5432"
         # Set health checks to wait until postgres has started
-        options: --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -45,7 +37,7 @@ jobs:
         run: cargo llvm-cov --all-features --lcov --verbose --workspace --output-path coverage.lcov
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres_test
-      - name:  Upload coverage
+      - name: Upload coverage
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
