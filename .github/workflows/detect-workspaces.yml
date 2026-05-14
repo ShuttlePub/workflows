@@ -2,6 +2,17 @@ name: DetectWorkspaces
 
 on:
   workflow_call:
+    inputs:
+      target-repository:
+        description: "Repository to checkout for detection (default: caller repository)"
+        type: string
+        required: false
+        default: ""
+      target-ref:
+        description: "Ref of target-repository to checkout (default: caller ref)"
+        type: string
+        required: false
+        default: ""
     outputs:
       matrix:
         description: "Detected workspaces for using matrix"
@@ -17,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: ${{ inputs.target-repository }}
+          ref: ${{ inputs.target-ref }}
           persist-credentials: false
       - uses: baptiste0928/cargo-install@b687c656bda5733207e629b50a22bf68974a0305 # v3.3.2
         with:
@@ -29,4 +42,3 @@ jobs:
           echo "matrix=$WORKSPACES" >> "$GITHUB_OUTPUT"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-    
