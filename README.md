@@ -131,7 +131,7 @@ outputs
 
 ## Consumer integration tests
 
-[`test-consumers.yml`](.github/workflows/test-consumers.yml) runs on push/PR to `main` that touches `.github/workflows/**`. It invokes `check.yml` and `test-psql.yml` (at the same revision as the caller workflow — for `pull_request` events, that is the PR's merge commit) against real downstream repositories (Stellar, Emumet) using `target-repository` / `target-ref` inputs, so breaking changes are caught before merging.
+[`test-consumers.yml`](.github/workflows/test-consumers.yml) runs on push/PR to `main` that touches `.github/workflows/**`. It invokes `check.yml` and `test-psql.yml` (at the same revision as the caller workflow — for `pull_request` events, that is the PR's merge commit) against a real downstream repository (Emumet) using `target-repository` / `target-ref` inputs, so breaking changes are caught before merging.
 
 Notes:
 
