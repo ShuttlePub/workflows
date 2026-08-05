@@ -28,7 +28,7 @@ jobs:
     needs: [read-toolchain]
     services:
       postgres:
-        image: postgres:16@sha256:287eced1f33b59ed265ed13a60d3680dd7646d70c4dc0e785f59a470ebc03eeb # postgres 16.13
+        image: postgres:16@sha256:95206741a5b214807675e14165369d05b93a9cf692223b616d07cca227e74b0b # postgres 16.13
         env:
           POSTGRES_DB: postgres_test
           POSTGRES_USER: postgres
