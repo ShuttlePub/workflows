@@ -19,7 +19,7 @@ permissions:
   contents: read
 jobs:
   read-toolchain:
-    uses: ./.github/workflows/read-toolchain.yml
+    uses: $/.github/workflows/read-toolchain.yml
     with:
       target-repository: ${{ inputs.target-repository }}
       target-ref: ${{ inputs.target-ref }}

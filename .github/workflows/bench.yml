@@ -14,9 +14,9 @@ permissions:
   contents: read
 jobs:
   read-toolchain:
-    uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
+    uses: $/.github/workflows/read-toolchain.yml
   detect-workspaces:
-    uses: ShuttlePub/workflows/.github/workflows/detect-workspaces.yml@main
+    uses: $/.github/workflows/detect-workspaces.yml
   check:
     name: Bench ${{ matrix.workspace }}
     needs: [read-toolchain, detect-workspaces]

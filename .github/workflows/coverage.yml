@@ -8,7 +8,7 @@ permissions:
   contents: read
 jobs:
   read-toolchain:
-    uses: ShuttlePub/workflows/.github/workflows/read-toolchain.yml@main
+    uses: $/.github/workflows/read-toolchain.yml
   coverage:
     name: Calculate coverage
     needs: read-toolchain
