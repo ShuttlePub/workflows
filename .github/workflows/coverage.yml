@@ -16,7 +16,7 @@ jobs:
     if: ${{ github.repository_owner == 'ShuttlePub' && !contains(github.event.head_commit.message, '[CI-SKIP]') }}
     services:
       postgres:
-        image: postgres:16@sha256:11a9d238fbb48bab14599c57e41123254452b1a2d93c6c8595bce96f346bd082
+        image: postgres:16@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
         env:
           POSTGRES_DB: postgres_test
           POSTGRES_USER: postgres
